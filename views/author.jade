@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  h1 
+    Flickr photo feed of 
+    = items[0].author
+
+  h3 
+    Also see feed of
+    = items[0].author
+    's
+    a(href='/'+items[0].author_id+'/friends') friends
+  
+  
+  each pic in items
+    p
+      img(src=pic.media.m)
+      | by 
+      a(href='/'+pic.author_id)
+        =pic.author

@@ -1,0 +1,15 @@
+{
+  "name": "photawe",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "3.4.4",
+    "jade": "*",
+    "rest": "~1.0.0",
+    "rest-client": "~0.1.5",
+    "xml2js": "~0.4.0"
+  }
+}
