@@ -56,6 +56,7 @@ app.get("/", function(req, res){
 			var json = JSON.parse(jsonString);
 		} catch(e){
 			console.log(e);
+			e.message = "Error parsing JSON";
 			res.status(500);
 			return res.json(e);
 		}
@@ -74,6 +75,7 @@ app.get("/:author", function(req,res){
 			var json = JSON.parse(jsonString);
 		} catch(e){
 			console.log(e);
+			e.message = "Error parsing JSON";
 			res.status(500);
 			return res.json(e);
 		}
@@ -92,6 +94,7 @@ app.get("/:author/friends", function(req,res){debugger
 			var json = JSON.parse(jsonString);
 		} catch(e){
 			console.log(e);
+			e.message = "Error parsing JSON";
 			res.status(500);
 			return res.json(e);
 		}
