@@ -1,10 +1,16 @@
 extends layout
 
 block content
-  h1 Flickr photo feed of
-    = author
-    's friends
-  
+  h1 Flickr photo feed 
+    =title
+
+  if items.length < 1
+    p
+      | No content by 
+      =author
+      's friends
+
+    
   
   each pic in items
     p
