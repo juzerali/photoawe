@@ -89,7 +89,7 @@ app.get("/:author/friends", function(req,res){
 	var author = req.params.author;
 	rest(feedUrl+friends+format+"&user_id="+author).then(function(blob,x){
 		var entity = blob.entity;
-		
+		debugger
 		try{
 			var json = eval(entity);
 		} catch(e){
@@ -98,7 +98,7 @@ app.get("/:author/friends", function(req,res){
 			return res.render(500);
 		}
 		json.author = author;
-		json.author_id = author_id;
+		json.author_id = author;
 		res.render('friends', json);
 	});
 });
