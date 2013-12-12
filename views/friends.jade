@@ -1,20 +1,28 @@
 extends layout
 
 block content
-  h1 Flickr photo feed 
-    =title
+  h1.jumbotron Flickr photo feed 
+    | Flickr photo feed from
+    a(href='/'+author_id)
+      =author
+      's friends
 
   if items.length < 1
-    p
+    p.jumbotron
       | No content by 
       =author
       's friends
 
     
-  
-  each pic in items
-    p
-      img(src=pic.media.m)
-      | by 
-      a(href='/'+pic.author_id)
-        =pic.author
+  .row
+    each pic in items
+      .col-sm-6.col-md-4
+        .thumbnail
+          img(data-src=pic.media.m, src=pic.media.m alt='...')
+          .caption
+            h4 
+              =pic.title
+            p
+              | by 
+              a.btn.btn-primary(href='/'+pic.author_id) 
+                =pic.author.match(/.*\((.*)\)/)[1]

@@ -35,30 +35,35 @@ if ('development' == app.get('env')) {
 app.get('/users', user.list);*/
 
 
-var public_photos = "http://api.flickr.com/services/feeds/photos_public.gne?format=json&nojsoncallback=1";
+// var public_photos = "http://api.flickr.com/services/feeds/photos_public.gne?format=json&nojsoncallback=1";
+var public_photos = "http://api.flickr.com/services/feeds/photos_public.gne?format=json";
 var feedUrl = "http://api.flickr.com/services/feeds/";
 var publ = "photos_public.gne?";
 var friends = "photos_friends.gne?";
-var format = "api_key=ea1c4880bd96f663725989b36519f9d0&format=json&nojsoncallback=1";
+// var format = "api_key=ea1c4880bd96f663725989b36519f9d0&format=json&nojsoncallback=1";
+var format = "api_key=ea1c4880bd96f663725989b36519f9d0&format=json";
 var extract_json = /jsonFlickrFeed\((.*)\)/m;
 var extract_author_name = /.*\((.*)\)/;
 var mime = require('rest/interceptor/mime');
 
 var client = rest.chain(mime);
 
+
+function jsonFlickrFeed(obj){
+	return obj;
+}
+
 app.get("/", function(req, res){
 	rest(public_photos).then(function(blob,x){
 		var entity = blob.entity;
-		var jsonString = entity.replace(/[’']/g, "");
-		// var jsonString = entity.replace(/\\/g, "");
-		debugger
+		var json = eval(blob.entity);
+		
 		try{
-			var json = JSON.parse(jsonString);
+			var json = eval(blob.entity);
 		} catch(e){
 			console.log(e);
-			e.message = "Error parsing JSON";
 			res.status(500);
-			return res.json(e);
+			return res.render("500");
 		}
 		res.render('index', json);
 	});
@@ -68,42 +73,42 @@ app.get("/:author", function(req,res){
 	var author = req.params.author;
 	rest(public_photos+'&id='+author).then(function(blob,x){
 		var entity = blob.entity;
-		var jsonString = entity.replace(/[’']/g, "");
-		// var jsonString = jsonString.replace(/\\/g, "");
-		debugger
+		
 		try{
-			var json = JSON.parse(jsonString);
+			var json = eval(entity);
 		} catch(e){
 			console.log(e);
-			e.message = "Error parsing JSON";
 			res.status(500);
-			return res.json(e);
+			return res.render("500");
 		}
 		res.render('author', json);
 	});
 });
 
-app.get("/:author/friends", function(req,res){debugger
+app.get("/:author/friends", function(req,res){
 	var author = req.params.author;
 	rest(feedUrl+friends+format+"&user_id="+author).then(function(blob,x){
 		var entity = blob.entity;
-		var jsonString = entity.replace(/[’']/g, "").replace(/\\/,"");
-		// var jsonString = jsonString.replace(/\\/g, "");
-		debugger
+		
 		try{
-			var json = JSON.parse(jsonString);
+			var json = eval(entity);
 		} catch(e){
 			console.log(e);
-			e.message = "Error parsing JSON";
 			res.status(500);
-			return res.json(e);
+			return res.render(500);
 		}
 		json.author = author;
+		json.author_id = author_id;
 		res.render('friends', json);
 	});
-})
+});
 
-http.createServer(app).listen(app.get('port'), function(){
+app.all("*",function(req, res){
+	res.status(404);
+	res.render("404");
+});
+
+http.createServer(app).listen(3000, function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
 

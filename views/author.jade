@@ -1,20 +1,25 @@
 extends layout
 
 block content
-  h1 
-    Flickr photo feed of 
-    = title
-
-  h3 
-    Also see feed of
-    = items[0].author
-    's
+  h1.jumbotron 
+    | Flickr photo feed of 
+    i
+      = title
+    br 
+    | Also see feed of
+    = items[0].author.match(/.*\((.*)\)/)[1]
+    's 
     a(href='/'+items[0].author_id+'/friends') friends
   
-  
-  each pic in items
-    p
-      img(src=pic.media.m)
-      | by 
-      a(href='/'+pic.author_id)
-        =pic.author
+  .row
+    each pic in items
+      .col-sm-6.col-md-4
+        .thumbnail
+          img(data-src=pic.media.m, src=pic.media.m alt='...')
+          .caption
+            h4 
+              =pic.title
+            p
+              | by 
+              a.btn.btn-primary(href='/'+pic.author_id) 
+                =pic.author.match(/.*\((.*)\)/)[1]
